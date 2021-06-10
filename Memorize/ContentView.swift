@@ -8,7 +8,44 @@
 import SwiftUI
 
 struct ContentView: View {
-    let cards = [
+    @State var theme: Theme = Themes.vehicles
+    @State var cardsCount = 8
+    
+    var body: some View {
+        VStack {
+            Text("Memorize!")
+                .font(.largeTitle)
+            CardsGridView(cards: theme.cards, cardsCount: $cardsCount)
+                .foregroundColor(theme.color)
+            themeButtons
+        }
+        .padding(.horizontal)
+    }
+    
+    private var themeButtons: some View {
+        HStack(spacing: 20) {
+            makeThemeButton(with: Themes.vehicles, label: "🚗")
+            makeThemeButton(with: Themes.animals, label: "🐶")
+            makeThemeButton(with: Themes.fruits, label: "🍏")
+            makeThemeButton(with: Themes.countries, label: "🇩🇿")
+        }
+        .padding(.horizontal)
+    }
+    
+    private func makeThemeButton(with newTheme: Theme, label: String) -> some View {
+        Button(action: { theme = newTheme }) {
+            ZStack {
+                Circle().stroke()
+                Text(label)
+            }
+        }
+        .font(.largeTitle)
+        .aspectRatio(1, contentMode: .fit)
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static let theme = Theme(name: "Test", color: .gray, cards: [
         Card(emoji: "🚌"),
         Card(emoji: "🚗"),
         Card(emoji: "🚂"),
@@ -17,61 +54,12 @@ struct ContentView: View {
         Card(emoji: "🚴‍♂️"),
         Card(emoji: "🏃‍♂️"),
         Card(emoji: "🚇"),
-    ]
+    ])
     
-    @State var cardsCount = 8
-    
-    var body: some View {
-        VStack {
-            CardsGridView(cards: cards, cardsCount: $cardsCount).foregroundColor(.orange)
-            Spacer()
-            toolbar.padding()
-        }
-        .padding(.horizontal)
-    }
-    
-    private var toolbar: some View {
-        HStack {
-            removeButton
-            Spacer()
-            shuffleButton
-            Spacer()
-            addButton
-        }
-        .font(.largeTitle)
-    }
-    
-    private var removeButton: some View {
-        Button(action: {
-            cardsCount = max(0, cardsCount - 1)
-        }) {
-            Image(systemName: "minus.circle")
-        }
-        .disabled(cardsCount == 0)
-    }
-    
-    private var shuffleButton: some View {
-        Button(action: {
-        }) {
-            Text("Shuffle")
-        }
-    }
-    
-    private var addButton: some View {
-        Button(action: {
-            cardsCount = min(cards.count, cardsCount + 1)
-        }) {
-            Image(systemName: "plus.circle")
-        }
-        .disabled(cardsCount == cards.count)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(theme: theme)
             .preferredColorScheme(.light)
-        ContentView()
+        ContentView(theme: theme)
             .preferredColorScheme(.dark)
             .previewLayout(.fixed(width: 2436 / 3.0, height: 1125 / 3.0))
     }

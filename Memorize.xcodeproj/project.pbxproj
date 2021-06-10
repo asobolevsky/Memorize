@@ -15,6 +15,7 @@
 		5F4265D62670F3C500670BFE /* Int+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4265D52670F3C500670BFE /* Int+Additions.swift */; };
 		5F4265D92671050B00670BFE /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4265D82671050B00670BFE /* Card.swift */; };
 		5F4265DE267162AA00670BFE /* CardsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4265DD267162AA00670BFE /* CardsGridView.swift */; };
+		5F4265EB267254A000670BFE /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4265EA267254A000670BFE /* Themes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		5F4265D52670F3C500670BFE /* Int+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Additions.swift"; sourceTree = "<group>"; };
 		5F4265D82671050B00670BFE /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		5F4265DD267162AA00670BFE /* CardsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsGridView.swift; sourceTree = "<group>"; };
+		5F4265EA267254A000670BFE /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				5F4265D82671050B00670BFE /* Card.swift */,
+				5F4265EA267254A000670BFE /* Themes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F4265EB267254A000670BFE /* Themes.swift in Sources */,
 				5F4265BA266FEB3B00670BFE /* ContentView.swift in Sources */,
 				5F4265D22670EC1600670BFE /* CardView.swift in Sources */,
 				5F4265D92671050B00670BFE /* Card.swift in Sources */,
