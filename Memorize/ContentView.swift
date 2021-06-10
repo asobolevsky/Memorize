@@ -13,34 +13,43 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            VStack {
             Text("Memorize!")
                 .font(.largeTitle)
-            CardsGridView(cards: theme.cards, cardsCount: $cardsCount)
+            CardsGridView(cards: theme.cards.shuffled(), cardsCount: $cardsCount)
                 .foregroundColor(theme.color)
+            }
+            .padding(.horizontal)
             themeButtons
         }
-        .padding(.horizontal)
     }
     
     private var themeButtons: some View {
-        HStack(spacing: 20) {
-            makeThemeButton(with: Themes.vehicles, label: "🚗")
-            makeThemeButton(with: Themes.animals, label: "🐶")
-            makeThemeButton(with: Themes.fruits, label: "🍏")
-            makeThemeButton(with: Themes.countries, label: "🇩🇿")
+        HStack {
+            Spacer()
+            makeThemeButton(with: Themes.vehicles, iconName: "car")
+            Spacer()
+            makeThemeButton(with: Themes.animals, iconName: "tortoise")
+            Spacer()
+            makeThemeButton(with: Themes.fruits, iconName: "leaf")
+            Spacer()
+            makeThemeButton(with: Themes.countries, iconName: "globe")
+            Spacer()
         }
         .padding(.horizontal)
     }
     
-    private func makeThemeButton(with newTheme: Theme, label: String) -> some View {
+    private func makeThemeButton(with newTheme: Theme, iconName: String) -> some View {
         Button(action: { theme = newTheme }) {
-            ZStack {
-                Circle().stroke()
-                Text(label)
+            VStack {
+                Image(systemName: iconName)
+                    .font(.title)
+                Spacer()
+                Text(newTheme.name)
+                    .font(.footnote)
             }
         }
-        .font(.largeTitle)
-        .aspectRatio(1, contentMode: .fit)
+        .frame(height: 54)
     }
 }
 
