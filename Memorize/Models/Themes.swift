@@ -10,83 +10,27 @@ import SwiftUI
 struct Theme {
     let name: String
     let color: Color
-    let cards: [Card]
+    let emojis: [String]
 }
 
 struct Themes {
-    static let vehicles = Theme(name: "Vehicles", color: .red, cards: [
-        Card(emoji: "🚌"),
-        Card(emoji: "🚗"),
-        Card(emoji: "🚂"),
-        Card(emoji: "🚋"),
-        Card(emoji: "🚊"),
-        Card(emoji: "🚴‍♂️"),
-        Card(emoji: "🏃‍♂️"),
-        Card(emoji: "🚇"),
-        Card(emoji: "✈️"),
-        Card(emoji: "🏎"),
-        Card(emoji: "🛵"),
-        Card(emoji: "🛰"),
-        Card(emoji: "🚁"),
-        Card(emoji: "🚀"),
-        Card(emoji: "🛸"),
-        Card(emoji: "🛶"),
+    static let vehicles = Theme(name: "Vehicles", color: .red, emojis: [
+        "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇",
+        "✈️", "🏎", "🛵", "🛰", "🚁", "🚀", "🛸", "🛶",
     ])
     
-    static let animals = Theme(name: "Animals", color: .orange, cards: [
-        Card(emoji: "🐶"),
-        Card(emoji: "🐭"),
-        Card(emoji: "🐰"),
-        Card(emoji: "🦊"),
-        Card(emoji: "🐻"),
-        Card(emoji: "🐼"),
-        Card(emoji: "🐨"),
-        Card(emoji: "🦁"),
-        Card(emoji: "🐯"),
-        Card(emoji: "🐮"),
-        Card(emoji: "🐷"),
-        Card(emoji: "🐸"),
-        Card(emoji: "🐵"),
-        Card(emoji: "🐔"),
-        Card(emoji: "🦉"),
-        Card(emoji: "🦆"),
+    static let animals = Theme(name: "Animals", color: .orange, emojis: [
+        "🐶", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁",
+        "🐯", "🐮", "🐷", "🐸", "🐵", "🐔", "🦉", "🦆",
     ])
     
-    static let fruits = Theme(name: "Fruits", color: .green, cards: [
-        Card(emoji: "🍏"),
-        Card(emoji: "🍐"),
-        Card(emoji: "🍊"),
-        Card(emoji: "🍌"),
-        Card(emoji: "🍉"),
-        Card(emoji: "🍇"),
-        Card(emoji: "🍒"),
-        Card(emoji: "🍈"),
-        Card(emoji: "🍋"),
-        Card(emoji: "🍓"),
-        Card(emoji: "🫐"),
-        Card(emoji: "🍑"),
-        Card(emoji: "🥭"),
-        Card(emoji: "🍍"),
-        Card(emoji: "🥥"),
-        Card(emoji: "🥝"),
+    static let fruits = Theme(name: "Fruits", color: .green, emojis: [
+        "🍏", "🍐", "🍊", "🍌", "🍉", "🍇", "🍒", "🍈",
+        "🍋", "🍓", "🫐", "🍑", "🥭", "🍍", "🥥", "🥝",
     ])
     
-    static let countries = Theme(name: "Countries", color: .blue, cards: [
-        Card(emoji: "🇦🇽"),
-        Card(emoji: "🇩🇿"),
-        Card(emoji: "🇦🇹"),
-        Card(emoji: "🇦🇷"),
-        Card(emoji: "🇧🇷"),
-        Card(emoji: "🇧🇬"),
-        Card(emoji: "🇨🇦"),
-        Card(emoji: "🇨🇱"),
-        Card(emoji: "🇨🇮"),
-        Card(emoji: "🇬🇪"),
-        Card(emoji: "🇵🇪"),
-        Card(emoji: "🇹🇭"),
-        Card(emoji: "🇹🇷"),
-        Card(emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿"),
-        Card(emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿"),
-        Card(emoji: "🇺🇾"),
+    static let countries = Theme(name: "Countries", color: .blue, emojis: [
+        "🇦🇽", "🇩🇿", "🇦🇹", "🇦🇷", "🇧🇷", "🇧🇬", "🇨🇦", "🇨🇱",
+        "🇨🇮", "🇬🇪", "🇵🇪", "🇹🇭", "🇹🇷", "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "🇺🇾",
     ])
 }

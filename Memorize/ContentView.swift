@@ -16,7 +16,7 @@ struct ContentView: View {
             VStack {
             Text("Memorize!")
                 .font(.largeTitle)
-            CardsGridView(cards: theme.cards.shuffled(), cardsCount: $cardsCount)
+            CardsGridView(emojis: theme.emojis.shuffled(), cardsCount: $cardsCount)
                 .foregroundColor(theme.color)
             }
             .padding(.horizontal)
@@ -54,16 +54,7 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let theme = Theme(name: "Test", color: .gray, cards: [
-        Card(emoji: "🚌"),
-        Card(emoji: "🚗"),
-        Card(emoji: "🚂"),
-        Card(emoji: "🚋"),
-        Card(emoji: "🚊"),
-        Card(emoji: "🚴‍♂️"),
-        Card(emoji: "🏃‍♂️"),
-        Card(emoji: "🚇"),
-    ])
+    static let theme = Theme(name: "Test", color: .gray, emojis: [ "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇", ])
     
     static var previews: some View {
         ContentView(theme: theme)
