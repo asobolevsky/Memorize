@@ -9,17 +9,21 @@ import SwiftUI
 
 typealias Card = MemoryGame<String>.Card
 
-class EmojiMemoryGame {
+let defaultNumberOfPairs = 4
+let defaultTheme = Themes.vehicles.theme
+let defaultSettings = GameSettings(numberOfPairs: defaultNumberOfPairs, theme: defaultTheme)
+
+class EmojiMemoryGame: ObservableObject {
     
     // MARK: - Private vars
     
-    private lazy var model: MemoryGame<String> = createMemoryGame(for: currentTheme)
+    @Published private var model = createMemoryGame()
     
     // MARK: - Public vars
     
-    var currentTheme: Theme = Themes.vehicles {
+    var settings: GameSettings = defaultSettings {
         didSet {
-            updateModel()
+            updateModel(with: settings)
         }
     }
     
@@ -29,12 +33,13 @@ class EmojiMemoryGame {
     
     // MARK: - Private
     
-    private func updateModel() {
-        model = createMemoryGame(for: currentTheme)
+    private func updateModel(with settings: GameSettings) {
+        model = EmojiMemoryGame.createMemoryGame(with: settings)
     }
     
-    private func createMemoryGame(for theme: Theme) -> MemoryGame<String> {
-        return MemoryGame<String>(cardPairsNumber: 4) { idx in
+    private static func createMemoryGame(with settings: GameSettings = defaultSettings) -> MemoryGame<String> {
+        return MemoryGame<String>(cardPairsNumber: settings.numberOfPairs) { idx in
+            let theme = settings.theme
             var finalIdx = idx
             if idx >= theme.emojis.count {
                 finalIdx = idx % theme.emojis.count
@@ -42,4 +47,11 @@ class EmojiMemoryGame {
             return theme.emojis[finalIdx]
         }
     }
+    
+    // MARK: - Intents
+    
+    func choose(_ card: Card) {
+        model.choose(card)
+    }
+    
 }

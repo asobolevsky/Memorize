@@ -7,30 +7,47 @@
 
 import SwiftUI
 
-struct Theme {
+struct Theme: Identifiable {
+    var id: String {
+        return name
+    }
     let name: String
     let color: Color
+    let iconName: String
     let emojis: [String]
 }
 
-struct Themes {
-    static let vehicles = Theme(name: "Vehicles", color: .red, emojis: [
-        "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇",
-        "✈️", "🏎", "🛵", "🛰", "🚁", "🚀", "🛸", "🛶",
-    ])
+enum Themes: CaseIterable {
+    case vehicles
+    case animals
+    case fruits
+    case countries
     
-    static let animals = Theme(name: "Animals", color: .orange, emojis: [
-        "🐶", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁",
-        "🐯", "🐮", "🐷", "🐸", "🐵", "🐔", "🦉", "🦆",
-    ])
-    
-    static let fruits = Theme(name: "Fruits", color: .green, emojis: [
-        "🍏", "🍐", "🍊", "🍌", "🍉", "🍇", "🍒", "🍈",
-        "🍋", "🍓", "🫐", "🍑", "🥭", "🍍", "🥥", "🥝",
-    ])
-    
-    static let countries = Theme(name: "Countries", color: .blue, emojis: [
-        "🇦🇽", "🇩🇿", "🇦🇹", "🇦🇷", "🇧🇷", "🇧🇬", "🇨🇦", "🇨🇱",
-        "🇨🇮", "🇬🇪", "🇵🇪", "🇹🇭", "🇹🇷", "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "🇺🇾",
-    ])
+    var theme: Theme {
+        switch self {
+        case .vehicles:
+            return Theme(name: "Vehicles", color: .red, iconName: "car", emojis: [
+                "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇",
+                "✈️", "🏎", "🛵", "🛰", "🚁", "🚀", "🛸", "🛶",
+            ])
+            
+        case .animals:
+            return Theme(name: "Animals", color: .orange, iconName: "tortoise", emojis: [
+                "🐶", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁",
+                "🐯", "🐮", "🐷", "🐸", "🐵", "🐔", "🦉", "🦆",
+            ])
+            
+        case .fruits:
+            return Theme(name: "Fruits", color: .green, iconName: "leaf", emojis: [
+                "🍏", "🍐", "🍊", "🍌", "🍉", "🍇", "🍒", "🍈",
+                "🍋", "🍓", "🫐", "🍑", "🥭", "🍍", "🥥", "🥝",
+            ])
+            
+        case .countries:
+            return Theme(name: "Countries", color: .blue, iconName: "globe", emojis: [
+                "🇦🇽", "🇩🇿", "🇦🇹", "🇦🇷", "🇧🇷", "🇧🇬", "🇨🇦", "🇨🇱",
+                "🇨🇮", "🇬🇪", "🇵🇪", "🇹🇭", "🇹🇷", "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "🇺🇾",
+            ])
+        }
+    }
 }

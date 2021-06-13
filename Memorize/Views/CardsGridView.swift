@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct CardsGridView: View {
-    var emojis: [String]
-    @Binding var cardsCount: Int
+    let cards: [Card]
+    var didTapCard: (Card) -> ()
     
     var body: some View {
         ScrollView {
             let gridItems = [ GridItem(.adaptive(minimum: .minCardWidth)) ]
             LazyVGrid(columns: gridItems) {
-                ForEach(emojis[0..<cardsCount], id: \.self) { emoji in
-                    CardView(content: emoji)
+                ForEach(cards) { card in
+                    CardView(card: card)
                         .aspectRatio(2/3, contentMode: .fit)
+                        .onTapGesture {
+                            didTapCard(card)
+                        }
                 }
             }
         }
@@ -25,10 +28,12 @@ struct CardsGridView: View {
 }
 
 struct CardsGridView_Previews: PreviewProvider {
-    static let emojis = [ "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇", ]
-    
     static var previews: some View {
-        CardsGridView(emojis: emojis, cardsCount: .constant(4))
+        let emojis = [ "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇", ]
+        let cards: [Card] = zip(0..<emojis.count, emojis).map { (idx, emoji) in
+            Card(id: idx, content: emoji)
+        }
+        CardsGridView(cards: cards, didTapCard: { _ in })
     }
 }
 

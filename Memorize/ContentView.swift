@@ -8,59 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var theme: Theme = Themes.vehicles
-    @State var cardsCount = 8
+    @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
         VStack {
             VStack {
             Text("Memorize!")
                 .font(.largeTitle)
-            CardsGridView(emojis: theme.emojis.shuffled(), cardsCount: $cardsCount)
-                .foregroundColor(theme.color)
+                CardsGridView(cards: viewModel.cards, didTapCard: { card in
+                    viewModel.choose(card)
+                })
+                    .foregroundColor(viewModel.settings.theme.color)
             }
             .padding(.horizontal)
-            themeButtons
+            ThemeSelectView(currentTheme: $viewModel.settings.theme)
         }
-    }
-    
-    private var themeButtons: some View {
-        HStack {
-            Spacer()
-            makeThemeButton(with: Themes.vehicles, iconName: "car")
-            Spacer()
-            makeThemeButton(with: Themes.animals, iconName: "tortoise")
-            Spacer()
-            makeThemeButton(with: Themes.fruits, iconName: "leaf")
-            Spacer()
-            makeThemeButton(with: Themes.countries, iconName: "globe")
-            Spacer()
-        }
-        .padding(.horizontal)
-    }
-    
-    private func makeThemeButton(with newTheme: Theme, iconName: String) -> some View {
-        Button(action: { theme = newTheme }) {
-            VStack {
-                Image(systemName: iconName)
-                    .font(.title)
-                Spacer()
-                Text(newTheme.name)
-                    .font(.footnote)
-            }
-        }
-        .frame(height: 54)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let theme = Theme(name: "Test", color: .gray, emojis: [ "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇", ])
     
     static var previews: some View {
-        ContentView(theme: theme)
+        let game = EmojiMemoryGame()
+        ContentView(viewModel: game)
             .preferredColorScheme(.light)
-        ContentView(theme: theme)
-            .preferredColorScheme(.dark)
-            .previewLayout(.fixed(width: 2436 / 3.0, height: 1125 / 3.0))
+//        ContentView(theme: theme)
+//            .preferredColorScheme(.dark)
+//            .previewLayout(.fixed(width: 2436 / 3.0, height: 1125 / 3.0))
     }
 }
