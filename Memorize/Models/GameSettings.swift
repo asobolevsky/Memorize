@@ -8,6 +8,5 @@
 import Foundation
 
 struct GameSettings {
-    var numberOfPairs: Int
     var theme: Theme
 }

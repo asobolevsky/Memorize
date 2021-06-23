@@ -9,42 +9,65 @@ import SwiftUI
 
 typealias Card = MemoryGame<String>.Card
 
-let defaultNumberOfPairs = 4
-let defaultTheme = Themes.vehicles.theme
-let defaultSettings = GameSettings(numberOfPairs: defaultNumberOfPairs, theme: defaultTheme)
-
 class EmojiMemoryGame: ObservableObject {
     
     // MARK: - Private vars
     
-    @Published private var model = createMemoryGame()
+    @Published private var model: MemoryGame<String>
     
     // MARK: - Public vars
     
-    var settings: GameSettings = defaultSettings {
-        didSet {
-            updateModel(with: settings)
-        }
-    }
+    var theme: Theme
     
     var cards: [Card] {
         return model.cards
     }
     
-    // MARK: - Private
-    
-    private func updateModel(with settings: GameSettings) {
-        model = EmojiMemoryGame.createMemoryGame(with: settings)
+    var score: Int {
+        return model.score
     }
     
-    private static func createMemoryGame(with settings: GameSettings = defaultSettings) -> MemoryGame<String> {
-        return MemoryGame<String>(cardPairsNumber: settings.numberOfPairs) { idx in
-            let theme = settings.theme
+    var color: Color {
+        return Color(hex: theme.colorHex)
+    }
+    
+    init(theme: Theme) {
+        self.theme = theme
+        self.model = EmojiMemoryGame.createMemoryGame(with: theme)
+    }
+    
+    func startNewGame() {
+        guard let randomTheme = Themes.allCases.randomElement() else {
+            return
+        }
+        
+        theme = randomTheme.theme
+        updateModel(with: theme)
+    }
+    
+    // MARK: - Private
+    
+    private func updateModel(with theme: Theme) {
+        model = EmojiMemoryGame.createMemoryGame(with: theme)
+    }
+    
+    private static func prepareEmojis(with emojis: [String]) -> [String] {
+        let emojisSet = Set(emojis)
+        var uniqueEmojis = Array(emojisSet)
+        uniqueEmojis.shuffle()
+        return uniqueEmojis
+    }
+    
+    private static func createMemoryGame(with theme: Theme) -> MemoryGame<String> {
+        // Ensuring all the emojis are unique
+        let emojis = prepareEmojis(with: theme.emojis)
+        let numberOfPairs = min(theme.numberOfPairs, emojis.count)
+        return MemoryGame<String>(cardPairsNumber: numberOfPairs) { idx in
             var finalIdx = idx
-            if idx >= theme.emojis.count {
-                finalIdx = idx % theme.emojis.count
+            if idx >= emojis.count {
+                finalIdx = idx % emojis.count
             }
-            return theme.emojis[finalIdx]
+            return emojis[finalIdx]
         }
     }
     
