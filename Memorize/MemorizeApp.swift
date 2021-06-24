@@ -7,16 +7,15 @@
 
 import SwiftUI
 
-
 let defaultSettings = GameSettings(theme: Themes.vehicles.theme)
 
 @main
 struct MemorizeApp: App {
-    let game = EmojiMemoryGame(theme: defaultSettings.theme)
+    private let game = EmojiMemoryGame(theme: defaultSettings.theme)
     
     var body: some Scene {
         WindowGroup {
-            GameView(viewModel: game)
+            GameView(game: game)
         }
     }
 }

@@ -36,15 +36,6 @@ class EmojiMemoryGame: ObservableObject {
         self.model = EmojiMemoryGame.createMemoryGame(with: theme)
     }
     
-    func startNewGame() {
-        guard let randomTheme = Themes.allCases.randomElement() else {
-            return
-        }
-        
-        theme = randomTheme.theme
-        updateModel(with: theme)
-    }
-    
     // MARK: - Private
     
     private func updateModel(with theme: Theme) {
@@ -75,6 +66,15 @@ class EmojiMemoryGame: ObservableObject {
     
     func choose(_ card: Card) {
         model.choose(card)
+    }
+    
+    func startNewGame() {
+        guard let randomTheme = Themes.allCases.randomElement() else {
+            return
+        }
+        
+        theme = randomTheme.theme
+        updateModel(with: theme)
     }
     
 }
