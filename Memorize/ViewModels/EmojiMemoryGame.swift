@@ -20,7 +20,7 @@ class EmojiMemoryGame: ObservableObject {
     var theme: Theme
     
     var cards: [Card] {
-        return model.cards
+        return model.gameCards
     }
     
     var score: Int {
@@ -53,7 +53,7 @@ class EmojiMemoryGame: ObservableObject {
         // Ensuring all the emojis are unique
         let emojis = prepareEmojis(with: theme.emojis)
         let numberOfPairs = min(theme.numberOfPairs, emojis.count)
-        return MemoryGame<String>(cardPairsNumber: numberOfPairs) { idx in
+        return MemoryGame<String>(setSize: theme.setSize, numberOfSets: numberOfPairs, deckSize: emojis.count) { idx in
             var finalIdx = idx
             if idx >= emojis.count {
                 finalIdx = idx % emojis.count

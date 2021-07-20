@@ -17,8 +17,8 @@ struct GameView: View {
                     .font(.largeTitle)
                 Text("Score: \(game.score)")
                     .font(.title2)
-                AdaptableGridView(items: game.cards, aspectRatio: .cardAspectRatio) { card in
-                    cardView(card: card)
+                AdaptableGridView(items: game.cards, aspectRatio: .cardAspectRatio) { index, card in
+                    cardView(index: index, card: card)
                 }
                 .foregroundColor(game.color)
             }
@@ -31,8 +31,8 @@ struct GameView: View {
     }
     
     @ViewBuilder
-    private func cardView(card: Card) -> some View {
-        CardView(card: card)
+    private func cardView(index: Int, card: Card) -> some View {
+        CardView(index: index, card: card)
             .padding(.cardPadding)
             .onTapGesture {
                 game.choose(card)

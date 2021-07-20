@@ -16,6 +16,7 @@ struct Theme: Identifiable {
     let iconName: String
     let emojis: [String]
     let numberOfPairs: Int
+    let setSize: Int
 }
 
 enum Themes: CaseIterable {
@@ -32,35 +33,35 @@ enum Themes: CaseIterable {
             return Theme(name: "Vehicles", colorHex: "F43B30", iconName: "car", emojis: [
                 "🚌", "🚗", "🚂", "🚋", "🚊", "🚴‍♂️", "🏃‍♂️", "🚇",
                 "✈️", "🏎", "🛵", "🛰", "🚁", "🚀", "🛸", "🛶",
-            ], numberOfPairs: 6)
+            ], numberOfPairs: 6, setSize: 2)
             
         case .animals:
             return Theme(name: "Animals", colorHex: "FF9500", iconName: "tortoise", emojis: [
                 "🐶", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁",
                 "🐯", "🐮", "🐷", "🐸", "🐵", "🐔", "🦉", "🦆",
-            ], numberOfPairs: 6)
+            ], numberOfPairs: 6, setSize: 2)
             
         case .fruits:
             return Theme(name: "Fruits", colorHex: "35C759", iconName: "leaf", emojis: [
                 "🍏", "🍐", "🍊", "🍌", "🍉", "🍇", "🍒", "🍈",
                 "🍋", "🍓", "🫐", "🍑", "🥭", "🍍", "🥥", "🥝",
-            ], numberOfPairs: 4)
+            ], numberOfPairs: 4, setSize: 2)
             
         case .countries:
             return Theme(name: "Countries", colorHex: "007AFF", iconName: "globe", emojis: [
                 "🇦🇽", "🇩🇿", "🇦🇹", "🇦🇷", "🇧🇷", "🇧🇬", "🇨🇦", "🇨🇱",
                 "🇨🇮", "🇬🇪", "🇵🇪", "🇹🇭", "🇹🇷", "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "🇺🇾",
-            ], numberOfPairs: 8)
+            ], numberOfPairs: 8, setSize: 2)
             
         case .food:
             return Theme(name: "Food", colorHex: "FECC02", iconName: "fork.knife", emojis: [
                 "🍕", "🍔", "🌭", "🌮",
-            ], numberOfPairs: 4)
+            ], numberOfPairs: 4, setSize: 2)
                 
         case .weather:
             return Theme(name: "Weather", colorHex: "007AFF", iconName: "sun.min.fill", emojis: [
                 "☀️", "🌧", "⛅️",
-            ], numberOfPairs: 3)
+            ], numberOfPairs: 3, setSize: 2)
         }
     }
 }

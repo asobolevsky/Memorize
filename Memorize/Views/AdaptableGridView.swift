@@ -10,7 +10,7 @@ import SwiftUI
 struct AdaptableGridView<Item: Identifiable, ItemView: View>: View {
     var items: [Item]
     var aspectRatio: CGFloat
-    @ViewBuilder var content: (Item) -> ItemView
+    @ViewBuilder var content: (Int, Item) -> ItemView
     
     var body: some View {
         GeometryReader { geometry in
@@ -18,8 +18,8 @@ struct AdaptableGridView<Item: Identifiable, ItemView: View>: View {
                 let width = widthThatFits(itemCount: items.count, in: geometry.size, itemAspectRation: aspectRatio)
                 let columns = [ adaptiveGridItem(width: width) ]
                 LazyVGrid(columns: columns, spacing: .itemViewSpacing) {
-                    ForEach(items) { item in
-                        content(item)
+                    ForEach(0..<items.count, id: \.self) { index in
+                        content(index, items[index])
                             .aspectRatio(aspectRatio, contentMode: .fit)
                     }
                 }

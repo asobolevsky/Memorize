@@ -7,60 +7,154 @@
 
 import Foundation
 
+let kMinSetSize = 2
+let kMaxSetSize = 3
+
 struct MemoryGame<CardContent: Equatable> {
-    private(set) var cards: [Card]
-    private(set) var score: Int = 0
+    var gameCards: [Card] = []
+    private(set) var score = 0
     
-    private var indexOfFaceUpCard: Int? {
+    private var contentDeck: [CardContent] = []
+    private var nextSetIndex = 0
+    private let setSize: Int
+    private var faceDownAllCards = false
+    
+    private var indicesOfFaceUpCards: [Int] {
         get {
-            return cards.indices
-                .filter { cards[$0].isFaceUp && (cards[$0].isMatched == false) }
-                .oneAndOnly
+            return gameCards.indices
+                .filter { gameCards[$0].isFaceUp && (gameCards[$0].isMatched == false) }
         }
         set {
-            cards.indices
-                .filter { cards[$0].isMatched == false }
-                .forEach { cards[$0].isFaceUp = ($0 == newValue) }
+            gameCards.indices
+                .filter { gameCards[$0].isMatched == false }
+                .forEach { gameCards[$0].isFaceUp = newValue.contains($0) }
         }
     }
     
-    init(cardPairsNumber: Int, createCardContent: (Int) -> CardContent) {
-        cards = []
-        for pairIndex in 0..<cardPairsNumber {
-            let cardContent = createCardContent(pairIndex)
-            cards.append(Card(id: pairIndex * 2, content: cardContent))
-            cards.append(Card(id: pairIndex * 2 + 1, content: cardContent))
+    private var indicesOfMatchedCards: [Int] {
+        return gameCards.indices
+            .filter { gameCards[$0].isMatched }
+    }
+    
+    init(setSize: Int, numberOfSets: Int, deckSize: Int, createCardContent: (Int) -> CardContent) {
+        self.setSize = max(min(setSize, kMaxSetSize), kMinSetSize)
+        
+        // Make deck
+        for index in 0..<deckSize {
+            let cardContent = createCardContent(index)
+            contentDeck.append(cardContent)
         }
-        cards.shuffle()
+        
+        // Update cards
+        for setIndex in nextSetIndex..<(numberOfSets + nextSetIndex) {
+            let cardContent = contentDeck[setIndex]
+            
+            for itemIndex in 0..<setSize {
+                let cardId = setIndex * setSize + (setSize - itemIndex - 1)
+                gameCards.append(Card(id: cardId, content: cardContent))
+            }
+        }
+        nextSetIndex = nextSetIndex + numberOfSets
+        gameCards.shuffle()
     }
     
     mutating func choose(_ card: Card) {
-        guard let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) else {
+        guard var chosenIndex = gameCards.firstIndex(where: { $0.id == card.id }) else {
             return
         }
         
-        guard (cards[chosenIndex].isFaceUp || cards[chosenIndex].isMatched) != true else {
+        guard gameCards[chosenIndex].isMatched == false else {
             return
         }
         
-        if let potentialMatchIndex = indexOfFaceUpCard {
-            if cards[chosenIndex].content == cards[potentialMatchIndex].content {
-                cards[chosenIndex].isMatched = true
-                cards[potentialMatchIndex].isMatched = true
-                score += 2
+        guard gameCards[chosenIndex].isFaceUp == false else {
+            deselectCardIfPossible(at: chosenIndex)
+            return
+        }
+        
+        if faceDownAllCards {
+            indicesOfFaceUpCards = []
+        }
+        
+        if replaceMatchedCardsIfPossible(), let newChosenIndex = gameCards.firstIndex(where: { $0.id == card.id }) {
+            chosenIndex = newChosenIndex
+        }
+        indicesOfFaceUpCards.append(chosenIndex)
+        if indicesOfFaceUpCards.count == setSize {
+            if cardsHaveSameContent(with: indicesOfFaceUpCards) {
+                addScoreAndMarkCardsAsMatched(with: indicesOfFaceUpCards)
             } else {
-                let cardsBeingMatched = cards[chosenIndex, potentialMatchIndex]
-                let numberOfCardsAlreadyBeenSeen = cardsBeingMatched.filter { $0.hasBeenSeen }.count
-                score -= numberOfCardsAlreadyBeenSeen
-                
-                cards[chosenIndex].hasBeenSeen = true
-                cards[potentialMatchIndex].hasBeenSeen = true
+                subtractScoreAndMarkCardsAsSeen(with: indicesOfFaceUpCards)
             }
-            
-            cards[chosenIndex].isFaceUp = true
         } else {
-            indexOfFaceUpCard = chosenIndex
+            faceDownAllCards = false
         }
+    }
+    
+    private func cardsHaveSameContent(with indices: [Int]) -> Bool {
+        guard let testCardIndex = indices.first else {
+            return true
+        }
+        let content = gameCards[testCardIndex].content
+        for index in indices[1...] {
+            if content != gameCards[index].content {
+                return false
+            }
+        }
+        return true
+    }
+    
+    private mutating func subtractScoreAndMarkCardsAsSeen(with indices: [Int]) {
+        let cardsBeingMatched = gameCards[indices]
+        let numberOfCardsAlreadyBeenSeen = cardsBeingMatched.filter { $0.hasBeenSeen }.count
+        score -= numberOfCardsAlreadyBeenSeen
+        indices.forEach {
+            gameCards[$0].hasBeenSeen = true
+        }
+        faceDownAllCards = true
+    }
+    
+    private mutating func addScoreAndMarkCardsAsMatched(with indices: [Int]) {
+        score += indices.count
+        indices.forEach {
+            gameCards[$0].isMatched = true
+        }
+    }
+    
+    private mutating func deselectCardIfPossible(at index: Int) {
+        guard indicesOfFaceUpCards.count < setSize else {
+            return
+        }
+        
+        if gameCards[index].hasBeenSeen {
+            score -= 1
+        }
+        gameCards[index].isFaceUp = false
+        gameCards[index].hasBeenSeen = true
+    }
+    
+    private mutating func replaceMatchedCardsIfPossible() -> Bool {
+        guard indicesOfMatchedCards.count > 0,
+              (indicesOfMatchedCards.count % setSize) == 0 else {
+            return false
+        }
+        
+        let indicesOfMatchedCards = self.indicesOfMatchedCards
+        if contentDeck.count > nextSetIndex {
+            let cardContent = contentDeck[nextSetIndex]
+            for itemIndex in 0..<setSize {
+                let matchedCardIndex = indicesOfMatchedCards[itemIndex]
+                let cardId = nextSetIndex * setSize + (setSize - itemIndex - 1)
+                gameCards[matchedCardIndex] = Card(id: cardId, content: cardContent)
+            }
+            nextSetIndex += 1
+        } else {
+            // Remove cards from the end
+            indicesOfMatchedCards.reversed()
+                .forEach { gameCards.remove(at: $0) }
+        }
+        
+        return true
     }
     
     struct Card: Identifiable {

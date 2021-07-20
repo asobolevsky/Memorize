@@ -24,4 +24,12 @@ extension Array {
         return result
     }
     
+    subscript(indices: [Int]) -> [Element] {
+        var result = [Element]()
+        for idx in indices {
+            result.append(self[idx])
+        }
+        return result
+    }
+    
 }

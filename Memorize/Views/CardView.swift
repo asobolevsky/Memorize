@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CardView: View {
+    let index: Int
     let card: Card
     
     var body: some View {
@@ -25,6 +26,9 @@ struct CardView: View {
                     Text(card.content).font(.system(size: contentFontSize))
                 } else {
                     shape.fill()
+                    Text("\(index + 1)")
+                        .foregroundColor(.white)
+                        .font(.system(size: contentFontSize))
                 }
             }
             .opacity(card.isMatched ? .cardIsMatchedTransparency : 1.0)
